@@ -17,8 +17,9 @@ public class SocialNetworkPostController {
     @GetMapping
     @ResponseBody
     public List<SocialNetworkPost> getPosts(@RequestParam(defaultValue = "0") int pageNumber,
-                                            @RequestParam(defaultValue = "50") int pageSize){
+                                            @RequestParam(defaultValue = "50") int pageSize,
+                                            @RequestParam(defaultValue = "ID") OrderOption orderOption){
         log.debug("Providing list of social posts");
-        return snpService.getPosts(pageNumber, pageSize, OrderOption.ID);
+        return snpService.getPosts(pageNumber, pageSize, orderOption);
     }
 }
