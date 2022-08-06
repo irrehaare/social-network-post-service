@@ -2,7 +2,7 @@ package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
 public enum OrderOption {
     ID("id"),
-    DATE("postDate");
+    DATE("post_date");
 
     public final String columnName;
 
