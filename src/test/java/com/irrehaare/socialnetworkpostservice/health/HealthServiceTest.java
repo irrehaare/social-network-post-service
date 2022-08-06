@@ -9,7 +9,7 @@ class HealthServiceTest {
     private static final int DEPENDENCY_COUNT = 3;
 
     @InjectMocks
-    HealthService healthService;
+    HealthService healthService = new HealthService();
 
     @Test
     void getHealthDependencyCountCheck() {
