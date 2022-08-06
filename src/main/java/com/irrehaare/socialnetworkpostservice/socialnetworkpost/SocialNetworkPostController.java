@@ -2,9 +2,7 @@ package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +15,10 @@ public class SocialNetworkPostController {
     private final SocialNetworkPostService snpService;
 
     @GetMapping
-    public List<SocialNetworkPostDto> getPosts(){
+    @ResponseBody
+    public List<SocialNetworkPost> getPosts(@RequestParam(defaultValue = "0") int pageNumber,
+                                            @RequestParam(defaultValue = "50") int pageSize){
         log.debug("Providing list of social posts");
-        return snpService.getPosts(0, 50, OrderOption.ID);
+        return snpService.getPosts(pageNumber, pageSize, OrderOption.ID);
     }
 }
