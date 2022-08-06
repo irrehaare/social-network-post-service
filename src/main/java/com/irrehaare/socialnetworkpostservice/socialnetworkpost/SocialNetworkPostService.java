@@ -17,4 +17,8 @@ public class SocialNetworkPostService {
     public List<SocialNetworkPost> getPosts(int pageNumber, int pageSize, OrderOption orderOption){
         return snpRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, orderOption.columnName))).getContent();
     }
+
+    public long getPostsCount() {
+        return snpRepository.count();
+    }
 }

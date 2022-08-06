@@ -22,4 +22,10 @@ public class SocialNetworkPostController {
         log.debug("Providing list of social posts");
         return snpService.getPosts(pageNumber, pageSize, orderOption);
     }
+
+    @GetMapping("/count")
+    public long getPostsCount(){
+        log.debug("Providing total count of posts");
+        return snpService.getPostsCount();
+    }
 }
