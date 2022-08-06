@@ -15,11 +15,15 @@ public class HealthController {
 
     @GetMapping("/health")
     public HealthResponse getHealth() {
-        return healthService.getHealth();
+        final HealthResponse health = healthService.getHealth();
+        log.debug(String.format("Providing full health status %s", health.isHealthy()));
+        return health;
     }
 
     @GetMapping("is-healthy")
     public boolean isHealthy() {
-        return getHealth().isHealthy();
+        final HealthResponse health = healthService.getHealth();
+        log.debug(String.format("Providing full health status %s", health.isHealthy()));
+        return health.isHealthy();
     }
 }

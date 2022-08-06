@@ -14,6 +14,7 @@ public class SocialNetworkPostController {
 
     @GetMapping
     public String getPosts(){
+        log.debug("Providing list of social posts");
         return "Testing the endpoint";
     }
 }
