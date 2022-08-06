@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -20,5 +21,9 @@ public class SocialNetworkPostService {
 
     public long getPostsCount() {
         return snpRepository.count();
+    }
+
+    public Optional<SocialNetworkPost> getPost(Long id) {
+        return snpRepository.findById(id);
     }
 }

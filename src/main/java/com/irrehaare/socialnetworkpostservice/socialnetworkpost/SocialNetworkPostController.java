@@ -2,9 +2,12 @@ package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,5 +30,13 @@ public class SocialNetworkPostController {
     public long getPostsCount(){
         log.debug("Providing total count of posts");
         return snpService.getPostsCount();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public SocialNetworkPost getPostById(@PathVariable Long id){
+        log.debug(String.format("Providing post by ID = %s", id));
+        final Optional<SocialNetworkPost> maybePost = snpService.getPost(id);
+        return maybePost.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post not found"));
     }
 }
