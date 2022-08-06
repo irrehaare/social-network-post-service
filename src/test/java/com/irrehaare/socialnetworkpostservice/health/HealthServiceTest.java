@@ -3,11 +3,7 @@ package com.irrehaare.socialnetworkpostservice.health;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HealthServiceTest {
     private static final int DEPENDENCY_COUNT = 3;
