@@ -21,6 +21,10 @@ public class HealthService {
     private static final String DESCRIPTION = "Provides a REST CRUD API for social network posts.";
     private static final String IMPACT = "CRITICAL: No posts can be loaded or edited without it.";
 
+    public HealthResponse getHealth() {
+        return new HealthResponse(getIsHealthy(), REPOSITORY_URL, getDependencies(), DESCRIPTION, IMPACT);
+    }
+
     private List<Dependency> getDependencies() {
         final LinkedList<Dependency> dependenciesList = new LinkedList<>();
         dependenciesList.add(new Dependency(
@@ -42,9 +46,5 @@ public class HealthService {
     private boolean getIsHealthy() {
         return getDependencies().parallelStream()
                 .allMatch(Dependency::isHealthy);
-    }
-
-    public HealthResponse getHealth() {
-        return new HealthResponse(getIsHealthy(), REPOSITORY_URL, getDependencies(), DESCRIPTION, IMPACT);
     }
 }
