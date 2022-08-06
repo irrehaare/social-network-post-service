@@ -25,8 +25,9 @@ this project.
 2. No side effects.
 
 ## Personal comments
-There is a number of practices where the best approach is heavily disputed in the programming industry. Let me explain 
-my choices for this microservice
+There is a number of practices where the best approach is heavily disputed in the programming industry. When working 
+with a team I always follow agreed guidelines with no regard for my personal preferences. Let me explain my choices 
+for this microservice. 
 ### REST API path - plural vs singular
 I've decided to name the api as /api/v1/social-network-posts (plural) as I agree that it's supposed to contain a 
 number of posts and GET method without specific id will provide all posts (also plural).
