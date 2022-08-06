@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,10 +16,10 @@ import java.time.LocalDateTime;
 @Table
 public class SocialNetworkPost {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime postDate;
 
     @Column(nullable = false)
@@ -29,6 +28,7 @@ public class SocialNetworkPost {
     @Column(nullable = false)
     private String content;
 
+    @Column(columnDefinition = "integer default 0")
     private int viewCount;
 }
 
