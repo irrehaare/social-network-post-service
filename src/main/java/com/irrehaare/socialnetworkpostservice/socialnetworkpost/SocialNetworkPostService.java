@@ -68,7 +68,7 @@ public class SocialNetworkPostService {
         );
     }
 
-    public void incrementViewCount(Long id) {
+    public void incrementViewCount(final Long id, final Integer by) {
         final Optional<SocialNetworkPost> maybePost = snpRepository.findById(id);
         if (maybePost.isEmpty() || maybePost.get().isDeleted()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -79,7 +79,7 @@ public class SocialNetworkPostService {
                 post.getPostDate(),
                 post.getAuthor(),
                 post.getContent(),
-                post.getViewCount()+1,
+                post.getViewCount()+by,
                 post.isDeleted())
         );
     }

@@ -66,9 +66,10 @@ public class SocialNetworkPostController {
     }
 
     @PostMapping("/{id}/views-count/increment")
-    public ResponseEntity<String> incrementViewCount(@PathVariable Long id){
-        log.debug(String.format("Increasing the view count of post ID=%d", id));
-        snpService.incrementViewCount(id);
+    public ResponseEntity<String> incrementViewCount(@PathVariable Long id,
+                                                     @RequestParam(defaultValue = "1") Integer by){
+        log.debug(String.format("Increasing the view count of post ID=%d by %d", id, by));
+        snpService.incrementViewCount(id, by);
         return new ResponseEntity<>("View count incremented.", HttpStatus.OK);
     }
 
