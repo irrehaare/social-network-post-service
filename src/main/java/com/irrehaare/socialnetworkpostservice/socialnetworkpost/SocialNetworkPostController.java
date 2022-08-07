@@ -69,17 +69,18 @@ public class SocialNetworkPostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id,
                                              @RequestParam(defaultValue = "false") boolean permanent) {
+        HttpStatus httpStatus;
         if (permanent) {
-            final HttpStatus httpStatus = snpService.permanentDelete(id);
-            String responseMessage = getDeleteResponseMessage(httpStatus);
-            return new ResponseEntity<>(responseMessage, httpStatus);
+            httpStatus = snpService.permanentDelete(id);
         } else {
-            return new ResponseEntity<>("Feature not implemented yet", HttpStatus.NOT_IMPLEMENTED);
+            httpStatus = snpService.delete(id);
         }
+        String responseMessage = getDeleteResponseMessage(httpStatus);
+        return new ResponseEntity<>(responseMessage, httpStatus);
     }
 
     private String getDeleteResponseMessage(HttpStatus httpStatus) {
-        String responseMessage = "";
+        String responseMessage;
         switch (httpStatus) {
             case NOT_FOUND:
                 responseMessage = "No post to delete";

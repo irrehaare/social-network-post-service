@@ -22,15 +22,22 @@ monitoring this microservice it includes a (mock) of health endpoints:
 As I've recently attended a conference focused on functional programming I tried to apply some ideas from it in 
 this project.
 1. Make illegal states unrepresentable.
-2. No side effects.
+2. No side effects (when possible within my skills).
+
+### Deleting objects
+I have implemented a possibility to permanently delete data from the DB, however in a default behaviour (without 
+query parameter permanent=true) it only marks IS_DELETED value to true, which causes the object to act within the 
+API as if it is deleted, but the data is kept in DB in case it's required later (e.g. because of some legal action).  
 
 ## Personal comments
 There is a number of practices where the best approach is heavily disputed in the programming industry. When working 
 with a team I always follow agreed guidelines with no regard for my personal preferences. Let me explain my choices 
 for this microservice. 
+
 ### REST API path - plural vs singular
 I've decided to name the api as /api/v1/social-network-posts (plural) as I agree that it's supposed to contain a 
 number of posts and GET method without specific id will provide all posts (also plural).
+
 ### Spring boot framework
 In my current position I only have contact with Spring when working on legacy code, as we create new microservices 
 without such heavy dependencies. The logic behind it sums up to saying "If it benefits from using Spring, it's not 

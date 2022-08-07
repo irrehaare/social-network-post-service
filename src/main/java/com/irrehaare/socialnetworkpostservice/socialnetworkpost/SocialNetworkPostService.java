@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -75,6 +76,28 @@ public class SocialNetworkPostService {
 
         snpRepository.deleteById(id);
         if (!snpRepository.existsById(id)) {
+            return HttpStatus.NO_CONTENT;
+        } else {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
+    public HttpStatus delete(Long id) {
+        final Optional<SocialNetworkPost> maybePost = snpRepository.findById(id);
+        if (maybePost.isEmpty() || maybePost.get().isDeleted()){
+            return HttpStatus.NOT_FOUND;
+        }
+
+        final SocialNetworkPost post = maybePost.get();
+        final SocialNetworkPost deletedPost = snpRepository.save(new SocialNetworkPost(
+                post.getId(),
+                post.getPostDate(),
+                post.getAuthor(),
+                post.getContent(),
+                post.getViewCount(),
+                true)
+        );
+        if (deletedPost.isDeleted()) {
             return HttpStatus.NO_CONTENT;
         } else {
             return HttpStatus.INTERNAL_SERVER_ERROR;
