@@ -1,0 +1,52 @@
+GET http://localhost:8080/health
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts/count
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts/5
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts?pageNumber=1&pageSize=2&orderOption=DATE&shouldIncrementViews=true
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts/5?shouldIncrementViews=true
+Accept: application/json
+###
+
+GET http://localhost:8080/api/v1/social-network-posts?author=Alex
+Accept: application/json
+###
+
+POST http://localhost:8080/api/v1/social-network-posts
+Content-Type: application/json
+
+{"author": "Irrehaare","content": "PotatoMcWhiskey is the best YouTuber!"}
+###
+
+POST http://localhost:8080/api/v1/social-network-posts/2/views-count/increment
+Content-Type: application/json
+###
+
+PUT http://localhost:8080/api/v1/social-network-posts/2
+Content-Type: application/json
+
+{"content": "PotatoMcWhiskey is the best YouTuber!"}
+###
+
+DELETE http://localhost:8080/api/v1/social-network-posts/2
+Content-Type: application/json
+###
+
+DELETE http://localhost:8080/api/v1/social-network-posts/1?permanent=true
+Content-Type: application/json
+###
+

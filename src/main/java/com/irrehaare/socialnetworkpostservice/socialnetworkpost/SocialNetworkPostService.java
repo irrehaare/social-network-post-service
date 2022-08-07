@@ -73,8 +73,8 @@ public class SocialNetworkPostService {
     }
 
     // CREATE FUNCTIONALITIES
-    public SocialNetworkPost addPost(NewSocialNetworkPostDto newPostDto) {
-        return snpRepository.save(new SocialNetworkPost(newPostDto.getAuthor(), newPostDto.getContent()));
+    public SocialNetworkPostDto addPost(NewSocialNetworkPostDto newPostDto) {
+        return new SocialNetworkPostDto(snpRepository.save(new SocialNetworkPost(newPostDto.getAuthor(), newPostDto.getContent())));
     }
 
     // UPDATE FUNCTIONALITIES

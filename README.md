@@ -1,7 +1,7 @@
 # Social Network Posts Microservice
 ## Description
-This is a springboot microservice providing a REST CRUD API for the social network posts. The object is defined as follows 
-(in pseudo-code):
+This is a springboot microservice providing a REST CRUD API for the social network posts. The object is defined as 
+follows (in pseudo-code):
 ```
 SocialNetworkPost {
     Date postDate
@@ -10,7 +10,11 @@ SocialNetworkPost {
     Number viewCount
 }
 ```
-
+## Running the application
+Run from SocialNetworkPostServiceApplication. API should be available under the localhost:8080. Please note that having 
+lombok plugin installed in IDE is strongly encouraged when browsing the project.
+### Implemented HTTP Requests
+Feel free to see the src/main/resources/exampleRequests.http for example requests sent to this API.
 ## Design decisions
 ### Health endpoints
 By the assumption that microservices function in the environment consisting of many of them, for the purpose of 
@@ -28,6 +32,11 @@ this project.
 I have implemented a possibility to permanently delete data from the DB, however in a default behaviour (without 
 query parameter permanent=true) it only marks IS_DELETED value to true, which causes the object to act within the 
 API as if it is deleted, but the data is kept in DB in case it's required later (e.g. because of some legal action).  
+
+### Storing edits
+Because of similar reasoning I've implemented storing the edit history in the separate table. While there is no API 
+to draw them it is much easier to implement one in the future, while recovering lost data would be, according to my 
+knowledge, impossible.
 
 ### Updating view counts
 1. I've implemented a separate endpoint with the assumption, that there will be clients (web or phone app) that 

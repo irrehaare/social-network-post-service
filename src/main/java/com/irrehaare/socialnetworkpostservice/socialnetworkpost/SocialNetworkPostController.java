@@ -49,7 +49,7 @@ public class SocialNetworkPostController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public SocialNetworkPost addPost(@RequestBody NewSocialNetworkPostDto newPostDto) {
+    public SocialNetworkPostDto addPost(@RequestBody NewSocialNetworkPostDto newPostDto) {
         log.debug(String.format("Adding new post from %s", newPostDto.getAuthor()));
         return snpService.addPost(newPostDto);
     }
