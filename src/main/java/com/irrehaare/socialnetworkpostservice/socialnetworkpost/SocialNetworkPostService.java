@@ -57,4 +57,18 @@ public class SocialNetworkPostService {
                 updatePostDto.getContent(),
                 postToEdit.getViewCount()));
     }
+
+    // DELETE FUNCTIONALITIES
+    public HttpStatus permanentDelete(Long id) {
+        if (!snpRepository.existsById(id)){
+            return HttpStatus.NOT_FOUND;
+        }
+
+        snpRepository.deleteById(id);
+        if (!snpRepository.existsById(id)) {
+            return HttpStatus.NO_CONTENT;
+        } else {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
 }
