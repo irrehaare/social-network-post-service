@@ -29,6 +29,13 @@ I have implemented a possibility to permanently delete data from the DB, however
 query parameter permanent=true) it only marks IS_DELETED value to true, which causes the object to act within the 
 API as if it is deleted, but the data is kept in DB in case it's required later (e.g. because of some legal action).  
 
+### Updating view counts
+1. I've implemented a separate endpoint with the assumption, that there will be clients (web or phone app) that 
+detect post being scrolled or opened into user's view and only then send request to increment view count
+2. I'm aware that putting action (increment) into path is not fully RESTful solution, but after quick research
+I've decided that's the least evil option of all. In professional environment I'd check company guidelines 
+and ask colleagues if necessary.
+    
 ## Personal comments
 There is a number of practices where the best approach is heavily disputed in the programming industry. When working 
 with a team I always follow agreed guidelines with no regard for my personal preferences. Let me explain my choices 

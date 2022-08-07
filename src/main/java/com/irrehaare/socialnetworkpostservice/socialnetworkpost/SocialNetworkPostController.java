@@ -65,6 +65,13 @@ public class SocialNetworkPostController {
         }
     }
 
+    @PostMapping("/{id}/views-count/increment")
+    public ResponseEntity<String> incrementViewCount(@PathVariable Long id){
+        log.debug(String.format("Increasing the view count of post ID=%d", id));
+        snpService.incrementViewCount(id);
+        return new ResponseEntity<>("View count incremented.", HttpStatus.OK);
+    }
+
     // DELETE FUNCTIONALITIES
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id,

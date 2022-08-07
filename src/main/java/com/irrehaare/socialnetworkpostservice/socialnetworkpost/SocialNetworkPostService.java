@@ -68,6 +68,22 @@ public class SocialNetworkPostService {
         );
     }
 
+    public void incrementViewCount(Long id) {
+        final Optional<SocialNetworkPost> maybePost = snpRepository.findById(id);
+        if (maybePost.isEmpty() || maybePost.get().isDeleted()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        final SocialNetworkPost post = maybePost.get();
+        snpRepository.save(new SocialNetworkPost(
+                post.getId(),
+                post.getPostDate(),
+                post.getAuthor(),
+                post.getContent(),
+                post.getViewCount()+1,
+                post.isDeleted())
+        );
+    }
+
     // DELETE FUNCTIONALITIES
     public HttpStatus permanentDelete(Long id) {
         if (!snpRepository.existsById(id)) {
