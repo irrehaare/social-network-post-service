@@ -35,6 +35,7 @@ detect post being scrolled or opened into user's view and only then send request
 2. I'm aware that putting action (increment) into path is not fully RESTful solution, but after quick research
 I've decided that's the least evil option of all. In professional environment I'd check company guidelines 
 and ask colleagues if necessary.
+3. I've added a possibility to increment views when getting the posts just in case.
     
 ## Personal comments
 There is a number of practices where the best approach is heavily disputed in the programming industry. When working 

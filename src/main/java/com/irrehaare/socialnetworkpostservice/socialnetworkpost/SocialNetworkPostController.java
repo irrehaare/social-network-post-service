@@ -24,17 +24,19 @@ public class SocialNetworkPostController {
     public List<SocialNetworkPostDto> getPosts(@RequestParam(defaultValue = "0") int pageNumber,
                                                @RequestParam(defaultValue = "50") int pageSize,
                                                @RequestParam(defaultValue = "ID") OrderOption orderOption,
-                                               @RequestParam(required = false) String author) {
+                                               @RequestParam(required = false) String author,
+                                               @RequestParam(defaultValue = "false") boolean shouldIncrementViews) {
         log.debug(String.format("Providing list of social posts. pageNum=%d, pageSize=%d, orderBy=%s, author=%s",
                 pageNumber, pageSize, orderOption.columnName, Objects.requireNonNullElse(author, "any")));
-        return snpService.getPosts(pageNumber, pageSize, orderOption, author);
+        return snpService.getPosts(pageNumber, pageSize, orderOption, author, shouldIncrementViews);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public SocialNetworkPostDto getPostById(@PathVariable Long id) {
+    public SocialNetworkPostDto getPostById(@PathVariable Long id,
+                                            @RequestParam(defaultValue = "false") boolean shouldIncrementViews) {
         log.debug(String.format("Providing post by ID = %s", id));
-        return snpService.getPost(id);
+        return snpService.getPost(id, shouldIncrementViews);
     }
 
     @GetMapping("/count")

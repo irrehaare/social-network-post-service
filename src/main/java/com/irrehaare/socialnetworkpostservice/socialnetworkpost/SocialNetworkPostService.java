@@ -21,17 +21,33 @@ public class SocialNetworkPostService {
     private final SocialNetworkPostRepository snpRepository;
 
     // READ FUNCTIONALITIES
-    public List<SocialNetworkPostDto> getPosts(int pageNumber, int pageSize, OrderOption orderOption, String author) {
+
+    // TODO Refactor this method later - it's too long and has code repeating
+    public List<SocialNetworkPostDto> getPosts(int pageNumber,
+                                               int pageSize,
+                                               OrderOption orderOption,
+                                               String author,
+                                               boolean shouldIncrementViews) {
         final Pageable pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, orderOption.columnName));
         if (author != null) {
             return snpRepository.findAllByAuthorAndDeletedIsNot(author, pageRequest)
                     .parallelStream()
-                    .map(SocialNetworkPostDto::new)
+                    .map(p -> {
+                        if (shouldIncrementViews){
+                            incrementViewCount(p.getId(), 1);
+                        }
+                        return new SocialNetworkPostDto(p);
+                    })
                     .collect(Collectors.toList());
         } else {
             return snpRepository.findAllByDeletedIsNot(pageRequest)
                     .parallelStream()
-                    .map(SocialNetworkPostDto::new)
+                    .map(p -> {
+                        if (shouldIncrementViews){
+                            incrementViewCount(p.getId(), 1);
+                        }
+                        return new SocialNetworkPostDto(p);
+                    })
                     .collect(Collectors.toList());
         }
     }
@@ -40,12 +56,17 @@ public class SocialNetworkPostService {
         return snpRepository.countAllByIsDeleted(false);
     }
 
-    public SocialNetworkPostDto getPost(Long id) {
+    public SocialNetworkPostDto getPost(Long id, boolean shouldIncrementViews) {
         final SocialNetworkPost post = snpRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post not found"));
         if (post.isDeleted()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post has been deleted");
         }
+
+        if (shouldIncrementViews){
+            incrementViewCount(id, 1);
+        }
+
         return new SocialNetworkPostDto(post);
     }
 
