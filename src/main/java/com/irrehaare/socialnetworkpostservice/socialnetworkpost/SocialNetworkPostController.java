@@ -3,12 +3,15 @@ package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.UpdateSocialNetworkPostDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,4 +60,15 @@ public class SocialNetworkPostController {
     }
 
     //UPDATE FUNCTIONALITIES
+    @PutMapping("/{id}")
+    public ResponseEntity<String> editPost(@RequestBody UpdateSocialNetworkPostDto updatePostDto,
+                                           @PathVariable Long id){
+        log.debug(String.format("Updating the content of post ID=%d to '%s'", id, updatePostDto.getContent()));
+        final SocialNetworkPost updatedPost = snpService.editPost(id, updatePostDto);
+        if (updatedPost.getContent().equals(updatePostDto.getContent())){
+            return new ResponseEntity<>("Post updated successfully.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to update post's content.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

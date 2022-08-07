@@ -3,13 +3,16 @@ package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.UpdateSocialNetworkPostDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +41,20 @@ public class SocialNetworkPostService {
         return snpRepository.findById(id);
     }
 
-    //CREATE FUNCTIONALITIES
+    // CREATE FUNCTIONALITIES
     public SocialNetworkPost addPost(NewSocialNetworkPostDto newPostDto) {
         return snpRepository.save(new SocialNetworkPost(newPostDto.getAuthor(), newPostDto.getContent()));
+    }
+
+    // UPDATE FUNCTIONALITIES
+    public SocialNetworkPost editPost(long id, UpdateSocialNetworkPostDto updatePostDto) {
+        final SocialNetworkPost postToEdit = snpRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return snpRepository.save(new SocialNetworkPost(
+                postToEdit.getId(),
+                postToEdit.getPostDate(),
+                postToEdit.getAuthor(),
+                updatePostDto.getContent(),
+                postToEdit.getViewCount()));
     }
 }
