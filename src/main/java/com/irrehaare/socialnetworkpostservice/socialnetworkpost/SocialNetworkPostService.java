@@ -1,5 +1,6 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
+import com.irrehaare.socialnetworkpostservice.posteditaudit.PostEditAuditService;
 import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class SocialNetworkPostService {
     private final SocialNetworkPostRepository snpRepository;
+    private final PostEditAuditService peaService;
 
     // READ FUNCTIONALITIES
 
@@ -79,6 +81,9 @@ public class SocialNetworkPostService {
     public SocialNetworkPost editPost(long id, UpdateSocialNetworkPostDto updatePostDto) {
         final SocialNetworkPost postToEdit = snpRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        peaService.addEdit(postToEdit);
+
         return snpRepository.save(new SocialNetworkPost(
                 postToEdit.getId(),
                 postToEdit.getPostDate(),
