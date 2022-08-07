@@ -1,5 +1,8 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,7 +52,9 @@ public class SocialNetworkPostController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public SocialNetworkPost addPost(@RequestBody NewSocialNetworkPostDto newPostDto){
-        log.debug(String.format("Adding new post from %s", newPostDto.author));
+        log.debug(String.format("Adding new post from %s", newPostDto.getAuthor()));
         return snpService.addPost(newPostDto);
     }
+
+    //UPDATE FUNCTIONALITIES
 }

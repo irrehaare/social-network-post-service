@@ -1,4 +1,4 @@
-package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
+package com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain;
 
 public enum OrderOption {
     ID("id"),

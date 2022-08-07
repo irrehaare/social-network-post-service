@@ -1,5 +1,8 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +40,6 @@ public class SocialNetworkPostService {
 
     //CREATE FUNCTIONALITIES
     public SocialNetworkPost addPost(NewSocialNetworkPostDto newPostDto) {
-        return snpRepository.save(new SocialNetworkPost(newPostDto.author, newPostDto.content));
+        return snpRepository.save(new SocialNetworkPost(newPostDto.getAuthor(), newPostDto.getContent()));
     }
 }

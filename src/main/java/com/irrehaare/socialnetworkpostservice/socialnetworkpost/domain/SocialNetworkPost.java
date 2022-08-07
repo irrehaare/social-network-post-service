@@ -1,4 +1,4 @@
-package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
+package com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

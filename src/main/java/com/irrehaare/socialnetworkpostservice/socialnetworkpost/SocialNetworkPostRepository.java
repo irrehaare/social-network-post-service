@@ -1,5 +1,6 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
