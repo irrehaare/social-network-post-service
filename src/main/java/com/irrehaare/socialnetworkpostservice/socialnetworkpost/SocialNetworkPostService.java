@@ -17,6 +17,7 @@ import java.util.Optional;
 public class SocialNetworkPostService {
     private final SocialNetworkPostRepository snpRepository;
 
+    // READ FUNCTIONALITIES
     public List<SocialNetworkPost> getPosts(int pageNumber, int pageSize, OrderOption orderOption, String author){
         final Pageable pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, orderOption.columnName));
         if (author != null){
@@ -32,5 +33,10 @@ public class SocialNetworkPostService {
 
     public Optional<SocialNetworkPost> getPost(Long id) {
         return snpRepository.findById(id);
+    }
+
+    //CREATE FUNCTIONALITIES
+    public SocialNetworkPost addPost(NewSocialNetworkPostDto newPostDto) {
+        return snpRepository.save(new SocialNetworkPost(newPostDto.author, newPostDto.content));
     }
 }

@@ -30,6 +30,13 @@ public class SocialNetworkPost {
 
     @Column(columnDefinition = "integer default 0")
     private int viewCount;
+
+    public SocialNetworkPost(String author, String content) {
+        this.author = author;
+        this.content = content;
+        this.postDate = LocalDateTime.now();
+        this.viewCount = 0;
+    }
 }
 
 
