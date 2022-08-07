@@ -31,11 +31,15 @@ public class SocialNetworkPost {
     @Column(columnDefinition = "integer default 0")
     private int viewCount;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDeleted;
+
     public SocialNetworkPost(String author, String content) {
         this.author = author;
         this.content = content;
         this.postDate = LocalDateTime.now();
         this.viewCount = 0;
+        this.isDeleted = false;
     }
 }
 

@@ -1,19 +1,14 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.UpdateSocialNetworkPostDto;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -26,10 +21,10 @@ public class SocialNetworkPostController {
     // READ FUNCTIONALITIES
     @GetMapping
     @ResponseBody
-    public List<SocialNetworkPost> getPosts(@RequestParam(defaultValue = "0") int pageNumber,
-                                            @RequestParam(defaultValue = "50") int pageSize,
-                                            @RequestParam(defaultValue = "ID") OrderOption orderOption,
-                                            @RequestParam(required = false) String author) {
+    public List<SocialNetworkPostDto> getPosts(@RequestParam(defaultValue = "0") int pageNumber,
+                                               @RequestParam(defaultValue = "50") int pageSize,
+                                               @RequestParam(defaultValue = "ID") OrderOption orderOption,
+                                               @RequestParam(required = false) String author) {
         log.debug(String.format("Providing list of social posts. pageNum=%d, pageSize=%d, orderBy=%s, author=%s",
                 pageNumber, pageSize, orderOption.columnName, Objects.requireNonNullElse(author, "any")));
         return snpService.getPosts(pageNumber, pageSize, orderOption, author);
@@ -37,10 +32,9 @@ public class SocialNetworkPostController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public SocialNetworkPost getPostById(@PathVariable Long id) {
+    public SocialNetworkPostDto getPostById(@PathVariable Long id) {
         log.debug(String.format("Providing post by ID = %s", id));
-        final Optional<SocialNetworkPost> maybePost = snpService.getPost(id);
-        return maybePost.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post not found"));
+        return snpService.getPost(id);
     }
 
     @GetMapping("/count")
@@ -74,19 +68,19 @@ public class SocialNetworkPostController {
     // DELETE FUNCTIONALITIES
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id,
-                                             @RequestParam(defaultValue = "false") boolean permanent){
-        if (permanent){
+                                             @RequestParam(defaultValue = "false") boolean permanent) {
+        if (permanent) {
             final HttpStatus httpStatus = snpService.permanentDelete(id);
-            String responseMessage = getResponseMessage(httpStatus);
+            String responseMessage = getDeleteResponseMessage(httpStatus);
             return new ResponseEntity<>(responseMessage, httpStatus);
         } else {
             return new ResponseEntity<>("Feature not implemented yet", HttpStatus.NOT_IMPLEMENTED);
         }
     }
 
-    private String getResponseMessage(HttpStatus httpStatus) {
+    private String getDeleteResponseMessage(HttpStatus httpStatus) {
         String responseMessage = "";
-        switch(httpStatus) {
+        switch (httpStatus) {
             case NOT_FOUND:
                 responseMessage = "No post to delete";
                 break;

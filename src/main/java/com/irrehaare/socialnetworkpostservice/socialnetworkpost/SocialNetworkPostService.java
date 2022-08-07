@@ -1,21 +1,17 @@
 package com.irrehaare.socialnetworkpostservice.socialnetworkpost;
 
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.NewSocialNetworkPostDto;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.OrderOption;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.SocialNetworkPost;
-import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.UpdateSocialNetworkPostDto;
+import com.irrehaare.socialnetworkpostservice.socialnetworkpost.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -24,21 +20,32 @@ public class SocialNetworkPostService {
     private final SocialNetworkPostRepository snpRepository;
 
     // READ FUNCTIONALITIES
-    public List<SocialNetworkPost> getPosts(int pageNumber, int pageSize, OrderOption orderOption, String author){
+    public List<SocialNetworkPostDto> getPosts(int pageNumber, int pageSize, OrderOption orderOption, String author) {
         final Pageable pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, orderOption.columnName));
-        if (author != null){
-            return snpRepository.findAllByAuthor(author, pageRequest);
+        if (author != null) {
+            return snpRepository.findAllByAuthorAndDeletedIsNot(author, pageRequest)
+                    .parallelStream()
+                    .map(SocialNetworkPostDto::new)
+                    .collect(Collectors.toList());
         } else {
-            return snpRepository.findAll(pageRequest).getContent();
+            return snpRepository.findAllByDeletedIsNot(pageRequest)
+                    .parallelStream()
+                    .map(SocialNetworkPostDto::new)
+                    .collect(Collectors.toList());
         }
     }
 
     public long getPostsCount() {
-        return snpRepository.count();
+        return snpRepository.countAllByIsDeleted(false);
     }
 
-    public Optional<SocialNetworkPost> getPost(Long id) {
-        return snpRepository.findById(id);
+    public SocialNetworkPostDto getPost(Long id) {
+        final SocialNetworkPost post = snpRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post not found"));
+        if (post.isDeleted()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Social network post has been deleted");
+        }
+        return new SocialNetworkPostDto(post);
     }
 
     // CREATE FUNCTIONALITIES
@@ -55,12 +62,14 @@ public class SocialNetworkPostService {
                 postToEdit.getPostDate(),
                 postToEdit.getAuthor(),
                 updatePostDto.getContent(),
-                postToEdit.getViewCount()));
+                postToEdit.getViewCount(),
+                postToEdit.isDeleted())
+        );
     }
 
     // DELETE FUNCTIONALITIES
     public HttpStatus permanentDelete(Long id) {
-        if (!snpRepository.existsById(id)){
+        if (!snpRepository.existsById(id)) {
             return HttpStatus.NOT_FOUND;
         }
 
